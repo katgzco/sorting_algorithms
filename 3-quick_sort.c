@@ -1,76 +1,96 @@
 #include "sort.h"
-
 /**
- * quick_sort - sorts an array of integers in ascending order
- * using the Quick sort
- * @array: The array to be soted
- * @size: Number of elements in @array
- */
+ * quick_sort - function that sorts an array of integers in ascending
+ * order using the Quick sort algorithm
+ * @array: array of integers
+ * @size: size of the array
+ **/
 void quick_sort(int *array, size_t size)
 {
-	if (array && size >= 2)
-		quick_sort_recursion(array, size, 0, size - 1);
+	/*
+	* QuickSort function that takes first and last index in the array
+	*/
+	QuickSort(array, 0, size - 1, size);
 }
-
 /**
- * quick_sort_recursion - Function for call recursively quick_sort function
- * @array: The array to be soted
- * @size: Number of elements in @array
- * @start: The first position in the array
- * @end: the las position in the array
- */
-void quick_sort_recursion(int *array, size_t size, int start, int end)
+ * QuickSort - function that sorts an array using recursion
+ * @array: array of integers
+ * @first: first index in the array
+ * @last: last element in the array.
+ * @size: size of the array
+ **/
+void QuickSort(int *array, int first, int last, size_t size)
 {
-	int p;
+	int p_index;
+	/*
+	* first and last index condition, first increases in every subpart
+	* and last decreaces in every subpart until the subpart is just one element
+	*/
+	if (first >= last)
+		return;
 
-	if (start < end)
-	{
-		p = partition(array, size, start, end);
-		quick_sort_recursion(array, size, start, p - 1);
-		quick_sort_recursion(array, size, p + 1, end);
-	}
+	/*
+	* Function that return the partioning point in the array
+	*/
+	p_index = partition(array, first, last, size);
+
+	/*
+	* Recursion, Sort the elements on the left of pivot
+	*/
+	QuickSort(array, first, p_index - 1, size);
+
+	/*
+	* Recursion, Sort the elements on the right of pivot
+	*/
+	QuickSort(array, p_index + 1, last, size);
 }
-
 /**
- * partition -  sorts an array of integers in ascending order
- * for the Quick sort
- * @array: The array to be soted
- * @size: Number of elements in @array
- * @start: The first position in the array
- * @end: the las position in the array
- * Return: The position of the pivot
- */
-int partition(int *array, size_t size, int start, int end)
+ * partition - function that parts the elements in the array
+ * @array: array of integers
+ * @first: first index in the array
+ * @last: last element in the array.
+ * @size: size of the array
+ * Return: smallest index.
+ **/
+int partition(int *array, int first, int last, size_t size)
 {
-	int pivot = *(array + end), pindex = start - 1, j;
+	int i, tmp, j, pivot;
 
-	for (j = start; j < end; j++)
+	/*
+	* pivot is the last element of the array and i the smallest index.
+	* i start at 0.
+	*/
+	pivot = array[last];
+	i = first;
+
+	/*
+	* transverse the elements of the array, but don't reach the pivot
+	*/
+	for (j = first; j <= last - 1; j++)
 	{
-		if (array[j] < pivot)
+		/*
+		* Compare each element of the array with the pivot and swap them
+		* at left of the array in case they are smaller (i) than the pivot
+		* do nothing if they are greater.
+		*/
+		if (array[j] <= pivot)
 		{
-			pindex++;
-			if (pindex != j)
-				swap(array + pindex, array + j, array, size);
-
+			tmp = array[j];
+			array[j] = array[i];
+			array[i] = tmp;
+			if (i != j)
+				print_array(array, size);
+			i++;
 		}
 	}
-	swap(array + (pindex + 1), array + end, array, size);
-	return (pindex + 1);
-}
-
-/**
- * swap - Auxiliar function to swap values in an given index.
- * @value_1: first indext to be swapped
- * @value_2: second indext to be swapped
- * @array: The array to be soted
- * @size: Number of elements in @array
- */
-void swap(int *value_1, int *value_2, int *array, size_t size)
-{
-	int tmp = 0;
-
-	tmp = *value_1;
-	*value_1 = *value_2;
-	*value_2 = tmp;
-	print_array(array, size);
+	/*
+	* Take the pivot and place it at the last smallest index (i)
+	* return this smallest index that is the partition point of array.
+	*/
+	tmp = array[j];
+	array[j] = array[i];
+	array[i] = tmp;
+	if (i != j)
+		print_array(array, size);
+	return (i);
 }
