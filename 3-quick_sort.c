@@ -6,12 +6,12 @@
  * @array: The array to be soted
  * @size: Number of elements in @array
  */
-
 void quick_sort(int *array, size_t size)
 {
-
 	if (array && size >= 2)
-		quick_sort_recursion(array, 0, size - 1, size);
+	{
+		quick_sort_recursion(array, size, 0, size - 1);
+	}
 }
 
 /**
@@ -21,16 +21,15 @@ void quick_sort(int *array, size_t size)
  * @start: The first position in the array
  * @end: the las position in the array
  */
-
-void quick_sort_recursion(int *array, int start, int end, size_t size)
+void quick_sort_recursion(int *array, size_t size, int start, int end)
 {
-	int pi = 0;
+	int p;
 
 	if (start < end)
 	{
-		pi = partition(array, start, end, size);
-		quick_sort_recursion(array, start, pi - 1, size);
-		quick_sort_recursion(array, pi + 1, end, size);
+		p = partition(array, size, start, end);
+		quick_sort_recursion(array, size, start, p - 1);
+		quick_sort_recursion(array, size, p + 1, end);
 	}
 }
 
@@ -43,20 +42,22 @@ void quick_sort_recursion(int *array, int start, int end, size_t size)
  * @end: the las position in the array
  * Return: The position of the pivot
  */
-int partition(int array[], int start, int end, size_t size)
+int partition(int *array, size_t size, int start, int end)
 {
-	int pivot = *(array + end), pindex = (start - 1), i;
+	int pivot = array[end], i = start, j;
 
-	for (i = start; i <= (end - 1); i++)
+	for (j = start; j < end; j++)
 	{
-		if (*(array + i) < pivot)
+		if (array[j] < pivot)
 		{
-			pindex++;
-			swap(array + pindex, array + i, array, size);
+			if (i != j)
+				swap(array + i, array + j, array, size);
+			i++;
 		}
 	}
-	swap(array + (pindex + 1), array + end, array, size);
-	return (pindex + 1);
+	swap(array + i, array + end, array, size);
+
+	return (i);
 }
 
 /**
