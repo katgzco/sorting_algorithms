@@ -9,13 +9,9 @@
 
 void quick_sort(int *array, size_t size)
 {
-	int end = 0;
 
 	if (array && size >= 2)
-	{
-		end = (int) size - 1;
-		quick_sort_recursion(array, 0, end, size);
-	}
+		quick_sort_recursion(array, 0, size - 1, size);
 }
 
 /**
@@ -56,11 +52,10 @@ int partition(int array[], int start, int end, size_t size)
 		if (*(array + i) < pivot)
 		{
 			pindex++;
-			swap(array + pindex, array + i);
+			swap(array + pindex, array + i, array, size);
 		}
 	}
-	swap(array + (pindex + 1), array + end);
-	print_array(array, size);
+	swap(array + (pindex + 1), array + end, array, size);
 	return (pindex + 1);
 }
 
@@ -68,12 +63,15 @@ int partition(int array[], int start, int end, size_t size)
  * swap - Auxiliar function to swap values in an given index.
  * @value_1: first indext to be swapped
  * @value_2: second indext to be swapped
+ * @array: The array to be soted
+ * @size: Number of elements in @array
  */
-void swap(int *value_1, int *value_2)
+void swap(int *value_1, int *value_2, int *array, size_t size)
 {
 	int tmp = 0;
 
 	tmp = *value_1;
 	*value_1 = *value_2;
 	*value_2 = tmp;
+	print_array(array, size);
 }
