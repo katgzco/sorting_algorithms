@@ -8,23 +8,20 @@
  */
 void bubble_sort(int *array, size_t size)
 {
-	bool swapped = true;
-	size_t i = 0;
+	size_t i = 0, j = 0;
 	int tmp = 0;
 
-	if (array != NULL && size > 2)
+	if (array != NULL && size >= 2)
 	{
-		while (swapped)
+		for (i = 0; i < (size - 1); i++)
 		{
-			swapped = false;
-			for (i = 0; i < size; i++)
+			for (j = 0; j < (size - i - 1); j++)
 			{
-				if (i < (size - 1) && *(array + i) > *(array + (i + 1)))
+				if (*(array + j) > *(array + (j + 1)))
 				{
-					tmp = *(array + i);
-					*(array + i) = *(array + (i + 1));
-					*(array + (i + 1)) = tmp;
-					swapped = true;
+					tmp = *(array + j);
+					*(array + j) = *(array + (j + 1));
+					*(array + (j + 1)) = tmp;
 					print_array(array, size);
 				}
 			}
